@@ -383,6 +383,7 @@ class UNet(nn.Module):
             x = module(before_pool, x)
 
         x = self.conv_final(x)
+        x = torch.sigmoid(x)
 
         return x
 
