@@ -3,6 +3,7 @@ from tqdm import tqdm
 from sklearn.metrics import f1_score
 from sklearn.metrics import confusion_matrix
 import matplotlib.pyplot as plt
+from SubsampledDataset import SubsampledDataset
 
 
 def train_step(model, data_loader, loss_fn, optimizer, device):
@@ -36,6 +37,7 @@ def train_step(model, data_loader, loss_fn, optimizer, device):
 			[accumulated_metadata, metadata], dim=0
 		)
 		loss_value = loss.item()
+
 
 	accumulated_y_true = accumulated_y_true.cpu()
 	accumulated_y_pred = accumulated_y_pred.cpu()
@@ -74,6 +76,7 @@ def val_step(model, data_loader, loss_fn, device):
 				[accumulated_metadata, metadata], dim=0
 			)
 			loss_value = loss.item()
+			
 
 
 	accumulated_y_true = accumulated_y_true.cpu()
@@ -85,9 +88,14 @@ def val_step(model, data_loader, loss_fn, device):
 
 
 def build_metrics_dict(dataset, y_true, y_pred, metadata, loss):
-	metrics = dataset.eval(y_true, y_pred, metadata)[0]
-	metrics = {k: v for k, v in metrics.items() if "acc" in k and "year" not in k}
-	metrics.pop("acc_worst_region")
+	from SubsampledDataset import true_to_label
+
+	metrics = dataset.eval(
+		torch.tensor([true_to_label[y.item()] for y in y_true]), # convert to original labels
+		torch.tensor([true_to_label[y.item()] for y in y_pred]),
+		metadata
+	)[0]
+	metrics = {k: v for k, v in metrics.items() if "acc" in k and "year" not in k and ("Americas" in k or "Europe" in k)}
 	metrics["loss"] = loss
 	return metrics
 

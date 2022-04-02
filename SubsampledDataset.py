@@ -8,7 +8,9 @@ REGIONS = set([
 	1, # Americas
 	3  # Europe
 ])
-DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+
+label_to_true = {label: i for i, label in enumerate(LABELS)}
+true_to_label = {v : k for k, v in label_to_true.items()}
 
 
 class SubsampledDataset(Dataset):
@@ -36,4 +38,6 @@ class SubsampledDataset(Dataset):
 
 
 	def __getitem__(self, idx):
-		return self.dataset[self.indices[idx]]
+		x, y, metadata = self.dataset[self.indices[idx]]
+		y = label_to_true[y.item()]
+		return x, y, metadata
