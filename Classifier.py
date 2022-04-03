@@ -25,7 +25,6 @@ class Classifier(nn.Module):
 		self.classifier = nn.Sequential(
 			nn.Flatten(),
 			nn.Linear(512 * 14 * 14, num_classes),
-			nn.Softmax(dim=-1)
 		)
 
 

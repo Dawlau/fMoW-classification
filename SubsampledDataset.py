@@ -3,7 +3,8 @@ from wilds.common.grouper import CombinatorialGrouper
 import torch
 
 
-LABELS = set([42, 11, 36, 35, 29, 14, 30, 22, 54, 56, 48, 6, 24, 46, 47, 20, 3, 41, 32, 43])
+LABELS = set([42, 11, 36, 35, 29, 14, 30, 22, 54, 56])
+# LABELS = set([42, 11, 36])
 REGIONS = set([
 	1, # Americas
 	3  # Europe
