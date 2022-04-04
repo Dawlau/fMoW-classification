@@ -5,6 +5,7 @@ import torch
 
 LABELS = set([42, 11, 36, 35, 29, 14, 30, 22, 54, 56])
 # LABELS = set([42, 11, 36])
+NUM_CLASSES = len(LABELS)
 REGIONS = set([
 	1, # Americas
 	3  # Europe
