@@ -7,7 +7,7 @@ from SubsampledDataset import SubsampledDataset
 import torch.autograd as autograd
 
 
-LAMBDA = 100.
+LAMBDA = 1e-1
 w = torch.tensor(1.).to("cuda").requires_grad_()
 
 
@@ -25,7 +25,6 @@ def train_step(model, data_loader, loss_fn, optimizer, device):
 	accumulated_metadata = torch.tensor([]).to(device)
 
 	loss_value = 0
-	# penalty = 0
 
 	for x, y, metadata in tqdm(data_loader):
 		x = x.to(device)
@@ -40,7 +39,7 @@ def train_step(model, data_loader, loss_fn, optimizer, device):
 		loss_mean = loss.mean()
 		penalty = compute_penalty(loss)
 
-		(loss_mean + LAMBDA * penalty).backward()
+		(LAMBDA * loss_mean + penalty).backward()
 		optimizer.step()
 
 		y_pred = torch.argmax(y_pred, dim=-1)
@@ -55,8 +54,7 @@ def train_step(model, data_loader, loss_fn, optimizer, device):
 			[accumulated_metadata, metadata], dim=0
 		)
 		loss_value += loss_mean.item()
-
-	loss_value /= len(data_loader)
+		print(loss_mean)
 
 	accumulated_y_true = accumulated_y_true.cpu()
 	accumulated_y_pred = accumulated_y_pred.cpu()
