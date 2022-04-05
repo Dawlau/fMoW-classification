@@ -7,7 +7,7 @@ from SubsampledDataset import SubsampledDataset
 import torch.autograd as autograd
 
 
-LAMBDA = 1e-1
+LAMBDA = 1e-2
 w = torch.tensor(1.).to("cuda").requires_grad_()
 
 

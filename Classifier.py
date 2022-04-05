@@ -11,7 +11,7 @@ class Classifier(nn.Module):
     self.unet = UNet(
       in_channels=3,
       out_channels=3,
-      n_blocks=5,
+      n_blocks=3,
       start_filters=32,
       activation='relu',
       normalization='batch',
@@ -19,14 +19,14 @@ class Classifier(nn.Module):
       dim=2
     )
     if use_pretrained:
-      self.unet.load_state_dict(torch.load("models/unet_65_adam_0.0005.pt"))
+      self.unet.load_state_dict(torch.load("models/unet_30_adam_0.0001_mse_3_blocks.pt"))
       if freeze_encoder:
         for param in self.unet.parameters():
-          param.requires_grad = False 
+          param.requires_grad = False
 
     self.classifier = nn.Sequential(
       nn.Flatten(),
-      nn.Linear(512 * 14 * 14, num_classes)
+      nn.Linear(128 * 56 * 56, num_classes)
     )
 
 
