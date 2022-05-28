@@ -1,0 +1,11 @@
+torch
+torchaudio
+tqdm
+sklearn
+matplotlib
+wilds
+torchvision
+numpy
+torch-summary
+ipykernel
+ipywidgets
